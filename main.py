@@ -1,4 +1,4 @@
-from random import choice, sample
+from random import choice
 
 cartas = {
     chr(0x1f0a1): 11, 
@@ -16,29 +16,36 @@ cartas = {
     chr(0x1f0ae): 10, 
 }
 
-print("Cartas: {}".format(" ".join(cartas.keys())))
-print("Puntos: {}".format(list(cartas.values())))
+lista_cartas = list(cartas)*4
 
-print("1\ Iteración estándar sobre un diccionario")
-for carta, valor in cartas.items():
-    print("la carta {} vale {}".format(carta, valor))
+def seleccion_carta():
+    """
+    Función que elige aleatoriamente una carta y su valor
+    """
+    carta = choice(lista_cartas)
+    score = score = cartas[carta]
+    return carta, score
 
-print("2\ Iteración ordenada sobre un diccionario")
-for carta in sorted(cartas.keys()):
-    print("la carta {} vale {}".format(carta, cartas[carta]))
+def entregar_carta(entregas):
+    """
+    Función que entrega n cartas al usuario
+    """
+    carta = list(range(entregas))
+    score = 0
+    for i in range(entregas):
+        carta[int(i)] = seleccion_carta()[0]
+        score += seleccion_carta()[1]
+    return carta, score
 
-print("3\ Black Jack")
-lista_cartas = list(cartas)
+def mostrar_cartas(usuario, resultado, entregas):
+    """
+    Función que muestra al jugador el estado de la partida
+    """
+    carta, score = entregar_carta(entregas)
+    print(usuario, end=" ")
+    print(carta, end=" ")
+    print(resultado, score)
+    return carta, score
 
-print("Ha seleccionado:", end=" ")
-carta = choice(lista_cartas)
-score = cartas[carta]
-print(carta, end=" ")
-carta = choice(lista_cartas)
-score += cartas[carta]
-print(carta, end=" ")
-print(" >>> su puntuación es de", score)
-
-main_banca = sample(lista_cartas, 2)
-score_banca = sum(cartas[carta] for carta in main_banca)
-print("La banca tiene: {} {}  >> su score es {}".format(main_banca[0], main_banca[1], score_banca))
+mostrar_cartas("Ha obtenido:", " >>> su puntuación es de", 2)
+mostrar_cartas("La banca tiene:", " >>> su puntuación es de", 2)
