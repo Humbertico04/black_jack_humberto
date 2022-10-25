@@ -47,5 +47,18 @@ def mostrar_cartas(usuario, resultado, entregas):
     print(resultado, score)
     return carta, score
 
-mostrar_cartas("Ha obtenido:", " >>> su puntuación es de", 2)
-mostrar_cartas("La banca tiene:", " >>> su puntuación es de", 2)
+def continuar():
+    cartasyo, scoreyo = mostrar_cartas("Ha obtenido:", " >>> su puntuación es de", 2)
+    cartasia, scoreia = mostrar_cartas("La banca tiene:", " >>> su puntuación es de", 2)
+    if scoreyo == 21 and scoreyo != scoreia:
+        print("Blackjack! Has Ganado!")
+    elif scoreia < scoreyo and scoreia < 17:
+        print("La banca toma otra carta")
+    elif scoreia > scoreyo:
+        print("Tomas otra carta")
+    elif scoreia == scoreyo and scoreia >= 17:
+        print("Tomas otra carta o empate")
+    else:
+        print("Has ganado!")
+
+continuar()
