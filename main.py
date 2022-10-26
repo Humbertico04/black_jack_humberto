@@ -18,12 +18,14 @@ cartas = {
 
 lista_cartas = list(cartas)*4
 
+SI = ("s", "si", "y", "yes", "1")
+
 def seleccion_carta():
     """
     Función que elige aleatoriamente una carta y su valor
     """
     carta = choice(lista_cartas)
-    score = score = cartas[carta]
+    score = cartas[carta]
     return carta, score
 
 def entregar_carta(entregas):
@@ -31,34 +33,49 @@ def entregar_carta(entregas):
     Función que entrega n cartas al usuario
     """
     carta = list(range(entregas))
-    score = 0
+    score = list(range(entregas))
     for i in range(entregas):
-        carta[int(i)] = seleccion_carta()[0]
-        score += seleccion_carta()[1]
-    return carta, score
+        carta[i], score[i] = seleccion_carta()
+    return carta, sum(score)
 
-def mostrar_cartas(usuario, resultado, entregas):
+def mostrar_cartas(usuario, resultado, carta, score):
     """
     Función que muestra al jugador el estado de la partida
     """
-    carta, score = entregar_carta(entregas)
     print(usuario, end=" ")
     print(carta, end=" ")
     print(resultado, score)
-    return carta, score
+
+def pedir_entrada_si_o_no(invitacion):
+    """
+    Pide al usuario por teclado si desea algo o no
+    """
+    try:
+        return input(invitacion).lower() in SI
+    except:
+        return False
+
+def sumar_cartas(carta, score):
+    """
+    Función que añade una carta al usuario
+    """
+    cartanew, scorenew = entregar_carta(1)
+    cartanew += carta
+    scorenew += score
+    return cartanew, scorenew
+
+def turno_inicial():
+    """
+    Función para ejecutar el turno 1 del blackjack
+    """
+    cartasyo, scoreyo = entregar_carta(2)
+    cartasia, scoreia = entregar_carta(2)
+    return cartasyo, scoreyo, cartasia, scoreia
 
 def continuar():
-    cartasyo, scoreyo = mostrar_cartas("Ha obtenido:", " >>> su puntuación es de", 2)
-    cartasia, scoreia = mostrar_cartas("La banca tiene:", " >>> su puntuación es de", 2)
-    if scoreyo == 21 and scoreyo != scoreia:
-        print("Blackjack! Has Ganado!")
-    elif scoreia < scoreyo and scoreia < 17:
-        print("La banca toma otra carta")
-    elif scoreia > scoreyo:
-        print("Tomas otra carta")
-    elif scoreia == scoreyo and scoreia >= 17:
-        print("Tomas otra carta o empate")
-    else:
-        print("Has ganado!")
-
+    cartasyo, scoreyo, cartasia, scoreia = turno_inicial()
+    while True:
+        mostrar_cartas("Ha obtenido:", " >>> su puntuación es de", cartasyo, scoreyo)
+        mostrar_cartas("La banca tiene:", " >>> su puntuación es de", cartasia, scoreia)
+        break
 continuar()
