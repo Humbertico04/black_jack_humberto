@@ -72,10 +72,48 @@ def turno_inicial():
     cartasia, scoreia = entregar_carta(2)
     return cartasyo, scoreyo, cartasia, scoreia
 
-def continuar():
+def empate_derrota(scoreyo, scoreia):
+    """
+    Funcón que compara los score de ambos participantes y decide si el jugador empate o pierde
+    """
+    if scoreyo == scoreia:
+        print("Empate!")
+    else:
+        print("Has perdido!")
+
+def lanzador():
+    """
+    Función que le ofrece al jugador la opción de jugar otra carta y chequea todas las posbilidades del juego
+    """
     cartasyo, scoreyo, cartasia, scoreia = turno_inicial()
     while True:
         mostrar_cartas("Ha obtenido:", " >>> su puntuación es de", cartasyo, scoreyo)
         mostrar_cartas("La banca tiene:", " >>> su puntuación es de", cartasia, scoreia)
-        break
-continuar()
+        if scoreyo == 21 and scoreia != 21:
+            print("Blackjack! Has ganado!")
+            break
+        elif scoreyo > 21:
+            print("Has perdido!")
+            break
+        elif scoreia > 21:
+            print("La banca se ha pasado de 21. Has ganado!")
+            break
+        elif scoreia < 17 <= scoreyo or scoreia < scoreyo <= 17:
+            if pedir_entrada_si_o_no("Desea tomar otra carta? ") == True:
+                cartasyo, scoreyo = sumar_cartas(cartasyo, scoreyo)
+            else:
+                cartasia, scoreia = sumar_cartas(cartasia, scoreia)
+        elif scoreyo > scoreia:
+            if pedir_entrada_si_o_no("Desea tomar otra carta? ") == True:
+                cartasyo, scoreyo = sumar_cartas(cartasyo, scoreyo)
+            else:
+                print("Has ganado!")
+                break
+        else:
+            if pedir_entrada_si_o_no("Desea tomar otra carta? ") == True:
+                cartasyo, scoreyo = sumar_cartas(cartasyo, scoreyo)
+            else:
+                empate_derrota(scoreyo, scoreia)
+                break
+
+lanzador()
